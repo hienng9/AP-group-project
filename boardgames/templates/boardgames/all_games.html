@@ -1,16 +1,28 @@
 {% extends "boardgames/base.html" %}
-{% block content %}
 
-<p>All Available Boardgames</p>
+{% block content %}
+<p>All Boardgames</p>
 
 <ul>
-{% for game in games %}
-<li><a href="{% url 'boardgames:game_detail' game.id %}">{{game}}</a></li>
-{% empty %}
-    <li>No boardgame have been added yet.</li>
-{% endfor %}
+    {% for game in games %}
+        {% if request.user != game.owner and game not in borrowed_games%}
+            <li><a href="{% url 'boardgames:game_detail' game.id %}">{{game}}</a>
+                owned by {{game.owner}}
+                {% if game.is_available %} 
+                    <a href="{% url 'boardgames:borrow_game' game.id %}">Click to borrow</a> 
+                {% else %} 
+                    Not Available 
+                {% endif %}
+            </li>
+        {% endif %}
+        {% empty %}
+            <li>No boardgame have been added yet.</li>
+        
+    {% endfor %}
 </ul>
-<a href="{% url 'boardgames:new_game' %}">Add a new boardgame</a>
+{% if user.is_authenticated %}
+    <a href="{% url 'boardgames:new_game' %}">Add a new boardgame</a>
+{% endif %}
 
 {% endblock content %}
 

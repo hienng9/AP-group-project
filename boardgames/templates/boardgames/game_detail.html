@@ -2,12 +2,24 @@
 
 {% block content %}
 
-<p>About {{ game }}</p>
-<p>Name: {{ game.name }}</p>
-<p>Description: {{ game.description }}</p>
+    <h1>About {{ game }}</h1>
+    <p>Name: {{ game.name }}</p>
+    <p>Age range: {{ game.age_range }}</p>
+    <p>Description: {{ game.description }}</p>
 
-<a href="{% url 'boardgames:edit_game' game.id %}">Edit boardgame</a>
-<a href="{% url 'boardgames:delete_game' game.id %}">Delete boardgame</a>
+    {% if user == game.owner %}
+    <!-- If the user is not the game owner, then hide the edit and delete function -->
+        <a href="{% url 'boardgames:edit_game' game.id %}">Edit</a>
+        <a href="{% url 'boardgames:delete_game' game.id %}">Delete</a>
 
+    <!-- If the user is not the game owner and the game is available, they can borrow -->
+    {% elif game.is_available %}
+        <a href="{% url 'boardgames:borrow_game' game.id %}">Borrow</a>
+        
+    <!-- If the game is not available, then tell the user who borrowed it and when -->
+    {% elif not game.is_available %}
+        <p>Game is borrowed by <strong>{{current_loan.borrower}}</strong> on {{current_loan.borrow_date}}</p>
+        
+    {% endif %}
 
-{% endblock content %}%}
+{% endblock content %}

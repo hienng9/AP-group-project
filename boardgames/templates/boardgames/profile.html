@@ -11,11 +11,12 @@
 <a href="{% url 'boardgames:new_game' %}">Add a new boardgame</a>
 </ul>
 
-<h4>My Loans</h4>
+<h4>My Current Loans</h4>
 {% for loan in loans %}
-<p>{{loan.name}}</p>
-<p>Date borrowed: {{loan.date_borrowed}}</p>
-<p>Return date: </p>
+    <p><a href="{% url 'boardgames:game_detail' loan.game.id %}">{{loan.game}}</a></p>
+    <p>Date borrowed: {{loan.borrow_date}}</p>
+{% empty %} 
+    <p>You have not borrow any games yet</p>
 {% endfor %}
 
 {% endblock content%}

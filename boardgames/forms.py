@@ -5,10 +5,10 @@ from .models import BoardGame, Loan
 class BoardGameForm(forms.ModelForm):
     class Meta:
         model = BoardGame
-        fields = ['name', 'description']
+        fields = ['name', 'age_range', 'description']
 
 
-class LoanForm(forms.Form):
+class LoanForm(forms.ModelForm):
     class Meta:
         model = Loan
-        fields = ['game']
+        fields = []
