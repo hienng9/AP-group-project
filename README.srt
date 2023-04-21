@@ -1,0 +1,45 @@
+Cloning the repository
+=======================================
+
+1. Clone the repository using the command below::
+    
+    $ git clone https://github.com/hienng9/AP-group-project.git 
+
+2. Move into the directory where we have the project files::
+
+    $ cd AP-group-project
+
+Creating a virtual environment
+==============================================
+
+Let's install virtualenv first if you have not already::
+
+    $ pip install virtualenv
+
+Then we create our virtual environment::
+
+    $ virtualenv envname
+
+Activate the virtual environment using either::
+
+    $ envname/Scripts/activate
+
+or::
+
+    $ source envname/bin/activate
+
+
+Install the requirements::
+
+    $ pip install -r requirements.txt
+
+
+Running the App
+======================================
+
+To run the App, in the same directory, open one terminal::
+
+    $ python manage.py runserver
+
+
+Then, the development server will be started at http://127.0.0.1:8000/
