@@ -1,5 +1,5 @@
-from datetime import timezone
-
+#from datetime import timezone
+from datetime import datetime
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -105,7 +105,7 @@ def borrow_game(request, game_id):
     game = BoardGame.objects.get(id = game_id)
     # If they have already 3 games in their loans, then show the message.
     if len(number_of_loans) >= 3:
-        return HttpResponse("Sorry, you cannot borrow more than 3 games. Please return one and rety again")
+        return HttpResponse("Sorry, you cannot borrow more than 3 games. Please return one and retry again")
     
     if request.method != 'POST':
         form = LoanForm()
@@ -127,3 +127,25 @@ def borrow_game(request, game_id):
     context = {"form": form, 'game': game}
     return render(request, 'boardgames/borrow_form.html', context)
     
+@login_required
+def return_game(request, loan_id):
+    loan = Loan.objects.get(id=loan_id)
+    game = BoardGame.objects.get(id = loan.game.id)
+    if request.method != 'POST':
+        form = LoanForm()
+    else:
+        #update is_returned in Loan
+        form = LoanForm(instance=loan)
+        new_entry = form.save(commit = False)
+        new_entry.return_date = datetime.now()
+        new_entry.is_returned=True
+        new_entry.save()
+        #Update is_available in BoardGame
+        game_form = BoardGameForm(instance=game)
+        game_form2 = game_form.save(commit=False)
+        game_form2.is_available = True
+        game_form2.save()
+        return redirect('boardgames:profile')
+
+    context = {"form": form, 'game': game, 'loan': loan}
+    return render(request, 'boardgames/return_form.html', context)

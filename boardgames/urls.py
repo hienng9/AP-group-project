@@ -18,5 +18,8 @@ urlpatterns = [
     # Page for showing user's profile
     path('profile/', views.profile, name='profile'),
     # Page for borrowing a boardgame
+
     path('borrow_game/<int:game_id>/', views.borrow_game, name='borrow_game'),
+
+    path('return_game/<int:loan_id>/', views.return_game, name='return_game'),
 ]

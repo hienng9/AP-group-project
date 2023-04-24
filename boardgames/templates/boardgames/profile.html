@@ -13,7 +13,10 @@
 
 <h4>My Current Loans</h4>
 {% for loan in loans %}
-    <p><a href="{% url 'boardgames:game_detail' loan.game.id %}">{{loan.game}}</a></p>
+    <p>
+        <a href="{% url 'boardgames:game_detail' loan.game.id %}">{{loan.game}}</a>
+        <a href="{% url 'boardgames:return_game' loan.id %}">Click to return</a> 
+    </p> 
     <p>Date borrowed: {{loan.borrow_date}}</p>
 {% empty %} 
     <p>You have not borrow any games yet</p>
