@@ -6,6 +6,6 @@
   <form action="{% url 'boardgames:borrow_game' game.id %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-      <button name="submit" >Submit request</button>
+      <button name="submit" class="btn btn-primary" >Yes, borrow!</button>
   </form>
 {% endblock content %}

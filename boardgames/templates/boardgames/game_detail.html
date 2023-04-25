@@ -6,15 +6,20 @@
     <p>Name: {{ game.name }}</p>
     <p>Age range: {{ game.age_range }}</p>
     <p>Description: {{ game.description }}</p>
+    <p> Owned by {{game.owner}}</p>
 
     {% if user == game.owner %}
     <!-- If the user is not the game owner, then hide the edit and delete function -->
-        <a href="{% url 'boardgames:edit_game' game.id %}">Edit</a>
-        <a href="{% url 'boardgames:delete_game' game.id %}">Delete</a>
+        <a href="{% url 'boardgames:edit_game' game.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'boardgames:delete_game' game.id %}" class="btn btn-primary">Delete</a>
 
     <!-- If the user is not the game owner and the game is available, they can borrow -->
     {% elif game.is_available %}
-        <a href="{% url 'boardgames:borrow_game' game.id %}">Borrow</a>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'boardgames:borrow_game' game.id %}" class="btn btn-primary">Borrow</a>
+        {% else %} 
+        <a href="{% url 'users:login' %}" class="btn btn-primary">Login to borrow</a>
+        {% endif %}
         
     <!-- If the game is not available, then tell the user who borrowed it and when -->
     {% elif not game.is_available %}

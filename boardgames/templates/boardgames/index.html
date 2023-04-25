@@ -1,6 +1,25 @@
 {% extends 'boardgames/base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
-<h1>Welcome to Board Game Club!</h1>
-<p>Here you can lend and borrow board games from other users.</p>
+ <!-- Background image -->
+  <div class="p-5 text-center bg-image" style="
+      background-image: url('https://img.freepik.com/premium-vector/hand-drawn-seamless-pattern-board-game-element_253081-414.jpg?w=2000');
+      height: 500px;
+      margin-top: 100px;
+    ">
+    <div class="mask" style="width:100%; height:100%; position:relative; left:0;top:0;overflow:hidden; background-color: rgba(0, 0, 0, 0.7); ">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+          <h1 class="mb-3">Welcome to Board Game Club!</h1>
+          <h4 class="mb-3">Lend and borrow your favorite boardgame with a click away!</h4>
+          <a class="btn btn-outline-light btn-lg m-2" href="{% url 'users:register' %}"
+            role="button" rel="nofollow" target="_blank">Register</a>
+          <a class="btn btn-outline-light btn-lg m-2" href="{% url 'users:login' %}"
+            target="_blank" role="button">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Background image -->
 {% endblock %}

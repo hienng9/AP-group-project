@@ -1,27 +1,48 @@
 {% extends "boardgames/base.html" %}
 
 {% block content %}
-<p>All Boardgames</p>
+<h4>All Boardgames</h4>
+<br>
+<div class="row row-cols-1 row-cols-md-4 g-4" >
 
-<ul>
     {% for game in games %}
         {% if request.user != game.owner and game not in borrowed_games%}
-            <li><a href="{% url 'boardgames:game_detail' game.id %}">{{game}}</a>
-                owned by {{game.owner}}
-                {% if game.is_available %} 
-                    <a href="{% url 'boardgames:borrow_game' game.id %}">Click to borrow</a> 
-                {% else %} 
-                    Not Available 
-                {% endif %}
-            </li>
+              <div class="col">
+                <div class="card h-80" >
+                  <img src="https://img.freepik.com/premium-vector/board-game-themed-seamless-pattern-colorful-cartoon-game-pieces-playing-cards_126267-8260.jpg?w=2000"
+                       class="card-img-top" alt="boardgame" style="height: 12rem" />
+                  <div class="card-body">
+                    <h5 class="card-title" ><a href="{% url 'boardgames:game_detail' game.id %}">{{game}}</a></h5>
+                    <p class="card-text">{{game.description}}</p>
+                     {% if user == game.owner %}
+                    <!-- If the user is not the game owner, then hide the edit and delete function -->
+                        <a href="{% url 'boardgames:edit_game' game.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'boardgames:delete_game' game.id %}" class="btn btn-primary">Delete</a>
+
+                    <!-- If the user is not the game owner and the game is available, they can borrow -->
+                    {% elif game.is_available %}
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'boardgames:borrow_game' game.id %}" class="btn btn-primary">Borrow</a>
+                        {% else %} 
+                        <a href="{% url 'users:login' %}" class="btn btn-primary">Login to borrow</a>
+                        {% endif %}
+                    <!-- If the game is not available, then tell the user who borrowed it and when -->
+                    {% elif not game.is_available %}
+                      <p>This game is unavailable at the moment </p>
+
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
         {% endif %}
         {% empty %}
             <li>No boardgame have been added yet.</li>
         
     {% endfor %}
-</ul>
+</div>
 {% if user.is_authenticated %}
-    <a href="{% url 'boardgames:new_game' %}">Add a new boardgame</a>
+    <a href="{% url 'boardgames:new_game' %}" >Add a new boardgame</a>
 {% endif %}
 
 {% endblock content %}
